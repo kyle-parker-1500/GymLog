@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 // entity says that the GymLog object will be stored in the database (don't have to supply tableName but good to)
-@Entity(tableName = GymLogDatabase.gymLogTable)
+@Entity(tableName = GymLogDatabase.GYM_LOG_TABLE)
 public class GymLog {
     // each piece of info stored in DB needs a primary key, use autoGenerate to generate them for us
     @PrimaryKey(autoGenerate = true)
