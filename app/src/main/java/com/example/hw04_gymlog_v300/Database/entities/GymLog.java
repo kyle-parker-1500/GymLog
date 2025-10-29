@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.hw04_gymlog_v300.Database.GymLogDatabase;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 // entity says that the GymLog object will be stored in the database (don't have to supply tableName but good to)
-@Entity(tableName = "gymLog")
+@Entity(tableName = GymLogDatabase.gymLogTable)
 public class GymLog {
     // each piece of info stored in DB needs a primary key, use autoGenerate to generate them for us
     @PrimaryKey(autoGenerate = true)
