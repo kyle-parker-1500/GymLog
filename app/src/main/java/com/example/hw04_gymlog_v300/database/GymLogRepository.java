@@ -1,9 +1,9 @@
-package com.example.hw04_gymlog_v300.Database;
+package com.example.hw04_gymlog_v300.database;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.example.hw04_gymlog_v300.Database.entities.GymLog;
+import com.example.hw04_gymlog_v300.database.entities.GymLog;
 import com.example.hw04_gymlog_v300.MainActivity;
 
 import java.util.ArrayList;
@@ -19,19 +19,25 @@ public class GymLogRepository {
     public GymLogRepository(Application application) {
         GymLogDatabase db = GymLogDatabase.getDatabase(application);
         this.gymLogDAO = db.gymLogDAO();
-        this.allLogs = this.gymLogDAO.getAllRecords();
+        // casting this into an ArrayList -> casting a List to an ArrayList is easy bc of inheritance (ArrayList Inherits from List)
+        this.allLogs = (ArrayList<GymLog>) this.gymLogDAO.getAllRecords();
     }
 
     public ArrayList<GymLog> getAllLogs() {
-        // gets a reference to something (this will be fullfilled at some point in the future)
+        // gets a reference to something (this will be fulfilled at some point in the future)
+        // gonna run in the background while other stuff happens
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
+                // uses this on a thread-> don't make db calls on main ui thread
+                // anonymous inner class
                 new Callable<ArrayList<GymLog>>() {
                     @Override
                     public ArrayList<GymLog> call() throws Exception {
-                        return gymLogDAO.getAllRecords();
+                        return (ArrayList<GymLog>) gymLogDAO.getAllRecords();
                     }
                 }
         );
+        // inner class throws exception, immediately trying to return the future
+        // if thread gets interrupted or something causes the anonymous inner class to fail, throws exception
         try {
             // gonna try to pull info out of future object
             return future.get();
@@ -39,7 +45,7 @@ public class GymLogRepository {
         } catch (InterruptedException | ExecutionException e) {
             Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
         }
-        // safely return
+        // safely return null, may not want to always return null
         return null;
     }
 
