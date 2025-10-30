@@ -15,12 +15,40 @@ public class GymLogRepository {
     private GymLogDAO gymLogDAO;
     private ArrayList<GymLog> allLogs;
 
+    // helps with singleton processes
+    private static GymLogRepository repository;
+
     // constructor
-    public GymLogRepository(Application application) {
+    // made this a singleton (only one instance of GymLogRepository)
+    private GymLogRepository(Application application) {
         GymLogDatabase db = GymLogDatabase.getDatabase(application);
         this.gymLogDAO = db.gymLogDAO();
         // casting this into an ArrayList -> casting a List to an ArrayList is easy bc of inheritance (ArrayList Inherits from List)
         this.allLogs = (ArrayList<GymLog>) this.gymLogDAO.getAllRecords();
+    }
+
+    // main code for singleton GymLogRepository
+    public static GymLogRepository getRepository(Application application) {
+        // helps with singleton processes
+        if (repository != null) {
+            return repository;
+        }
+        // submitting a task to future
+        Future<GymLogRepository> future = GymLogDatabase.databaseWriteExecutor.submit(
+                new Callable<GymLogRepository>() {
+                    @Override
+                    public GymLogRepository call() throws Exception {
+                        return new GymLogRepository(application);
+                    }
+                }
+        );
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem when getting GymLogRepository, thread error.");
+        }
+        // once safe to return
+        return null;
     }
 
     public ArrayList<GymLog> getAllLogs() {

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         // instance of application
         // gives us access to db
-        repository = new GymLogRepository(getApplication());
+        repository = GymLogRepository.getRepository(getApplication());
 
         // enabling scroll in our displayed exercise info
         binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
