@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import com.example.hw04_gymlog_v300.Database.entities.GymLog;
 
-import java.util.List;
+import java.util.ArrayList;
 
 // DAO - Data access object
 @Dao
@@ -20,5 +20,5 @@ public interface GymLogDAO {
     // static reference to name of table
     // all table names defined in DB class (avoids misspelling)
     @Query("Select * from " + GymLogDatabase.GYM_LOG_TABLE)
-    List<GymLog> getAllRecords();
+    ArrayList<GymLog> getAllRecords();
 }
