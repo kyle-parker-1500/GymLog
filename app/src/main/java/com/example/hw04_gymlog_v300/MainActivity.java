@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
+
+        // testing updateDisplay() -> should delete if finding issues
+        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateDisplay();
+            }
+        });
     }
 
     private void insertGymLogRecord() {
