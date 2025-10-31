@@ -13,6 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.hw04_gymlog_v300.database.entities.GymLog;
 import com.example.hw04_gymlog_v300.MainActivity;
+import com.example.hw04_gymlog_v300.database.entities.User;
 import com.example.hw04_gymlog_v300.database.typeConverters.LocalDateTypeConverter;
 
 import java.time.LocalDate;
@@ -20,9 +21,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @TypeConverters(LocalDateTypeConverter.class)
-@Database(entities = {GymLog.class}, version = 1, exportSchema = false)
+@Database(entities = {GymLog.class, User.class}, version = 2, exportSchema = false)
 public abstract class GymLogDatabase extends RoomDatabase {
 
+    public static final String USER_TABLE = "user_table";
     private static final String DATABASE_NAME = "GymLog_database";
     // names of tables go here
     public static final String GYM_LOG_TABLE = "gymLogTable";
