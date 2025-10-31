@@ -1,5 +1,6 @@
 package com.example.hw04_gymlog_v300;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // login page content -> displays login page
+        loginUser();
+        if (loggedInUserId == -1) {
+            Intent intent = LoginActivity.loginIntentFactory(getApplicationContext());
+            startActivity(intent);
+        }
+
         // instance of application
         // gives us access to db
         repository = GymLogRepository.getRepository(getApplication());
@@ -59,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 updateDisplay();
             }
         });
+    }
+
+    private void loginUser() {
+        // TODO: Create login method
     }
 
     private void insertGymLogRecord() {
