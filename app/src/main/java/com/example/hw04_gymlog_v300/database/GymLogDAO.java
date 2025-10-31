@@ -19,6 +19,6 @@ public interface GymLogDAO {
 
     // static reference to name of table
     // all table names defined in DB class (avoids misspelling)
-    @Query("Select * from " + GymLogDatabase.GYM_LOG_TABLE)
+    @Query("Select * from " + GymLogDatabase.GYM_LOG_TABLE + " ORDER BY date DESC")
     List<GymLog> getAllRecords();
 }
