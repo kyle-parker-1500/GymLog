@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String MAIN_ACTIVITY_USER_ID = "com.example.hw04_gymlog_v300.MAIN_ACTIVITY_USER_ID";
     static final String SHARED_PREFERENCE_USERID_KEY = "com.example.hw04_gymlog_v300.SHARED_PREFERENCE_USERID_KEY";
     static final String SHARED_PREFERENCE_USERID_VALUE = "com.example.hw04_gymlog_v300.SHARED_PREFERENCE_USERID_VALUE";
+    static final String SAVED_INSTANCE_STATE_USERID_KEY = "com.example.hw04_gymlog_v300.SAVED_INSTANCE_STATE_USERID_KEY"; // INFERRED INFORMATION (NOT DR. C'S CODE)
     private ActivityMainBinding binding;
     private GymLogRepository repository;
 
@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         // login page content -> displays login page
         // e.g., gets user information
-        loginUser();
+        repository = GymLogRepository.getRepository(getApplication());
+        loginUser(savedInstanceState);
 
 
         // make sure user is logged in
@@ -93,32 +94,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loginUser() {
+    private void loginUser(Bundle savedInstanceState) {
         // if there's no intent it'll kick us into the sign in page
         // check shared preference for logged in user
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCE_USERID_KEY, Context.MODE_PRIVATE);
-        loggedInUserId = sharedPreferences.getInt(SHARED_PREFERENCE_USERID_VALUE, LOGGED_OUT);
-
-        if (loggedInUserId != LOGGED_OUT) {
-            return;
+        if(sharedPreferences.contains(SHARED_PREFERENCE_USERID_KEY)) {
+            loggedInUserId = sharedPreferences.getInt(SHARED_PREFERENCE_USERID_VALUE, LOGGED_OUT);
         }
-        // check intent for logged in user
-        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
+
+        if (loggedInUserId == LOGGED_OUT & savedInstanceState != null && savedInstanceState.containsKey(SHARED_PREFERENCE_USERID_KEY)) {
+            loggedInUserId = savedInstanceState.getInt(SAVED_INSTANCE_STATE_USERID_KEY, LOGGED_OUT);
+        }
+
+        if (loggedInUserId == LOGGED_OUT) {
+            loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
+        }
         if (loggedInUserId == LOGGED_OUT) {
             return;
         }
 
         // observer design pattern
-        LiveData<User> userObserver = repository.getUserByUsername(getUserById(loggedInUserId));
+        LiveData<User> userObserver = repository.getUserByUserId(loggedInUserId);
         // waiting for something to come back
         userObserver.observe(this, user -> {
+            this.user = user;
             if (user != null) {
-               return;
-            } else {
-                // theres been a change -> update menu
                 invalidateOptionsMenu();
+            } else {
+                // todo: determine if this is messing w/ anything
+//                logout();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVED_INSTANCE_STATE_USERID_KEY, loggedInUserId);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        // but we're already in main activity
+        sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, loggedInUserId);
+        sharedPrefEditor.apply();
     }
 
     @Override
@@ -143,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
                 // logout method
-                showLogooutDialog();
+                showLogoutDialog();
                 return false;
             }
         });
         return true;
     }
 
-    private void showLogooutDialog() {
+    private void showLogoutDialog() {
         // invalidate all login info & kick user back to main screen
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
         // using singleton: don't want multiple alert dialogs rendered on top of each other
@@ -184,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefEditor.apply();
 
         getIntent().putExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT);
+
         startActivity(LoginActivity.loginIntentFactory(getApplicationContext()));
     }
 
@@ -208,8 +226,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDisplay() {
         // accessing db
-        ArrayList<GymLog> allLogs = repository.getAllLogs();
+        ArrayList<GymLog> allLogs = repository.getAllLogsByUserId(loggedInUserId);
         if (allLogs.isEmpty()) {
+            // todo: fix if R.string.nothing_to_show is causing logic error
             binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
         StringBuilder sb = new StringBuilder();

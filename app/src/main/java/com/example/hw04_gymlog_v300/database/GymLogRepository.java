@@ -10,6 +10,7 @@ import com.example.hw04_gymlog_v300.MainActivity;
 import com.example.hw04_gymlog_v300.database.entities.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -100,5 +101,29 @@ public class GymLogRepository {
 
     public LiveData<User> getUserByUserId(int userId) {
         return userDAO.getUserByUserId(userId);
+    }
+
+    public ArrayList<GymLog> getAllLogsByUserId(int loggedInUserId) {
+        Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
+                // uses this on a thread-> don't make db calls on main ui thread
+                // anonymous inner class
+                new Callable<ArrayList<GymLog>>() {
+                    @Override
+                    public ArrayList<GymLog> call() throws Exception {
+                        return (ArrayList<GymLog>) gymLogDAO.getRecordByLoggedInUserId(loggedInUserId);
+                    }
+                }
+        );
+        // inner class throws exception, immediately trying to return the future
+        // if thread gets interrupted or something causes the anonymous inner class to fail, throws exception
+        try {
+            // gonna try to pull info out of future object
+            return future.get();
+            // if it fails it'll output this
+        } catch (InterruptedException | ExecutionException e) {
+            Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
+        }
+        // safely return null, may not want to always return null
+        return null;
     }
 }
