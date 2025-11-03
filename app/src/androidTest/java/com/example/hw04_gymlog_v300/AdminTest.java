@@ -30,15 +30,14 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class WholeAppTest {
+public class AdminTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void wholeAppTest() {
-        SystemClock.sleep(500);
+    public void adminTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userNameLoginEditText),
                         childAtPosition(
@@ -48,9 +47,8 @@ public class WholeAppTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("testuser1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("admin1"), closeSoftKeyboard());
         SystemClock.sleep(500);
-
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.passwordLoginEditText),
                         childAtPosition(
@@ -60,9 +58,8 @@ public class WholeAppTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("testuser1"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("admin1"), closeSoftKeyboard());
         SystemClock.sleep(500);
-
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.loginButton), withText("Login!"),
                         childAtPosition(
@@ -73,7 +70,6 @@ public class WholeAppTest {
                                 3),
                         isDisplayed()));
         appCompatButton.perform(click());
-
         SystemClock.sleep(500);
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.exerciseInputEditText),
@@ -84,7 +80,7 @@ public class WholeAppTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("ohp"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText(":)"), closeSoftKeyboard());
 
         SystemClock.sleep(500);
         ViewInteraction appCompatEditText4 = onView(
@@ -96,7 +92,7 @@ public class WholeAppTest {
                                                 0)),
                                 4),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("155"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("100"), closeSoftKeyboard());
 
         SystemClock.sleep(500);
         ViewInteraction appCompatEditText5 = onView(
@@ -108,7 +104,7 @@ public class WholeAppTest {
                                                 0)),
                                 6),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("10"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("5"), closeSoftKeyboard());
 
         SystemClock.sleep(500);
         ViewInteraction appCompatButton2 = onView(
@@ -124,7 +120,7 @@ public class WholeAppTest {
 
         SystemClock.sleep(500);
         ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.exerciseInputEditText), withText("ohp"),
+                allOf(withId(R.id.exerciseInputEditText), withText(":)"),
                         childAtPosition(
                                 allOf(withId(R.id.main),
                                         childAtPosition(
@@ -132,11 +128,11 @@ public class WholeAppTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText6.perform(replaceText("pushups"));
+        appCompatEditText6.perform(replaceText(":("));
 
         SystemClock.sleep(500);
         ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.exerciseInputEditText), withText("pushups"),
+                allOf(withId(R.id.exerciseInputEditText), withText(":("),
                         childAtPosition(
                                 allOf(withId(R.id.main),
                                         childAtPosition(
@@ -145,6 +141,54 @@ public class WholeAppTest {
                                 2),
                         isDisplayed()));
         appCompatEditText7.perform(closeSoftKeyboard());
+
+        SystemClock.sleep(500);
+        ViewInteraction appCompatEditText8 = onView(
+                allOf(withId(R.id.weightInputEditText), withText("100"),
+                        childAtPosition(
+                                allOf(withId(R.id.main),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatEditText8.perform(replaceText("1000"));
+
+        SystemClock.sleep(500);
+        ViewInteraction appCompatEditText9 = onView(
+                allOf(withId(R.id.weightInputEditText), withText("1000"),
+                        childAtPosition(
+                                allOf(withId(R.id.main),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatEditText9.perform(closeSoftKeyboard());
+
+        SystemClock.sleep(500);
+        ViewInteraction appCompatEditText10 = onView(
+                allOf(withId(R.id.repInputEditText), withText("5"),
+                        childAtPosition(
+                                allOf(withId(R.id.main),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                6),
+                        isDisplayed()));
+        appCompatEditText10.perform(replaceText("50"));
+
+        SystemClock.sleep(500);
+        ViewInteraction appCompatEditText11 = onView(
+                allOf(withId(R.id.repInputEditText), withText("50"),
+                        childAtPosition(
+                                allOf(withId(R.id.main),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                6),
+                        isDisplayed()));
+        appCompatEditText11.perform(closeSoftKeyboard());
 
         SystemClock.sleep(500);
         ViewInteraction appCompatButton3 = onView(
@@ -159,56 +203,8 @@ public class WholeAppTest {
         appCompatButton3.perform(click());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.exerciseInputEditText), withText("pushups"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText8.perform(click());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.exerciseInputEditText), withText("pushups"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText9.perform(replaceText("~-[,,_,,]:3"));
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText10 = onView(
-                allOf(withId(R.id.exerciseInputEditText), withText("~-[,,_,,]:3"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText10.perform(closeSoftKeyboard());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.logButton), withText("Log!"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                7),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
-        SystemClock.sleep(500);
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.logoutMenuItem), withText("testuser1"),
+                allOf(withId(R.id.logoutMenuItem), withText("admin1"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
@@ -218,29 +214,17 @@ public class WholeAppTest {
         actionMenuItemView.perform(click());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(android.R.id.button1), withText("Logout"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.buttonPanel),
                                         0),
                                 3)));
-        appCompatButton5.perform(scrollTo(), click());
+        appCompatButton4.perform(scrollTo(), click());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.loginButton), withText("Login!"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        appCompatButton6.perform(click());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText11 = onView(
+        ViewInteraction appCompatEditText12 = onView(
                 allOf(withId(R.id.userNameLoginEditText),
                         childAtPosition(
                                 allOf(withId(R.id.main),
@@ -249,22 +233,10 @@ public class WholeAppTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatEditText11.perform(replaceText("admin1"), closeSoftKeyboard());
+        appCompatEditText12.perform(replaceText("admin1"), closeSoftKeyboard());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.loginButton), withText("Login!"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        appCompatButton7.perform(click());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText12 = onView(
+        ViewInteraction appCompatEditText13 = onView(
                 allOf(withId(R.id.passwordLoginEditText),
                         childAtPosition(
                                 allOf(withId(R.id.main),
@@ -273,10 +245,10 @@ public class WholeAppTest {
                                                 0)),
                                 2),
                         isDisplayed()));
-        appCompatEditText12.perform(replaceText("admin1"), closeSoftKeyboard());
+        appCompatEditText13.perform(replaceText("admin1"), closeSoftKeyboard());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatButton8 = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.loginButton), withText("Login!"),
                         childAtPosition(
                                 allOf(withId(R.id.main),
@@ -285,91 +257,7 @@ public class WholeAppTest {
                                                 0)),
                                 3),
                         isDisplayed()));
-        appCompatButton8.perform(click());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText13 = onView(
-                allOf(withId(R.id.exerciseInputEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        appCompatEditText13.perform(replaceText("ohp"), closeSoftKeyboard());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText14 = onView(
-                allOf(withId(R.id.weightInputEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText14.perform(replaceText("125"), closeSoftKeyboard());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText15 = onView(
-                allOf(withId(R.id.repInputEditText),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                6),
-                        isDisplayed()));
-        appCompatEditText15.perform(replaceText("15"), closeSoftKeyboard());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatButton9 = onView(
-                allOf(withId(R.id.logButton), withText("Log!"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                7),
-                        isDisplayed()));
-        appCompatButton9.perform(click());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText16 = onView(
-                allOf(withId(R.id.weightInputEditText), withText("125"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText16.perform(replaceText("115"));
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatEditText17 = onView(
-                allOf(withId(R.id.weightInputEditText), withText("115"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatEditText17.perform(closeSoftKeyboard());
-
-        SystemClock.sleep(500);
-        ViewInteraction appCompatButton10 = onView(
-                allOf(withId(R.id.logButton), withText("Log!"),
-                        childAtPosition(
-                                allOf(withId(R.id.main),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                7),
-                        isDisplayed()));
-        appCompatButton10.perform(click());
+        appCompatButton5.perform(click());
 
         SystemClock.sleep(500);
         ViewInteraction actionMenuItemView2 = onView(
@@ -383,14 +271,14 @@ public class WholeAppTest {
         actionMenuItemView2.perform(click());
 
         SystemClock.sleep(500);
-        ViewInteraction appCompatButton11 = onView(
+        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(android.R.id.button1), withText("Logout"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.buttonPanel),
                                         0),
                                 3)));
-        appCompatButton11.perform(scrollTo(), click());
+        appCompatButton6.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
