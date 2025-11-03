@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     double mWeight = 0.0;
     int mReps = 0;
 
-    // TODO: Add login information
     int loggedInUserId = -1;
     private User user;
 
@@ -85,32 +84,13 @@ public class MainActivity extends AppCompatActivity {
 
         updateSharedPreference();
 
-        // enabling scroll in our displayed exercise info
-        // todo: remove this
-//        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
-
-        // updating display before click (visible before action)
-        // todo: remove this
-//        updateDisplay();
-
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay();
                 insertGymLogRecord();
-                //todo: remove this
-//                updateDisplay();
             }
         });
-
-        // todo: remove this block
-//        // testing updateDisplay() -> should delete if finding issues
-//        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                updateDisplay();
-//            }
-//        });
     }
 
     private void loginUser(Bundle savedInstanceState) {
