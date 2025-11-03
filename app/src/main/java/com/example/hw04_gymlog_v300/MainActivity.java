@@ -16,11 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hw04_gymlog_v300.database.GymLogRepository;
 import com.example.hw04_gymlog_v300.database.entities.GymLog;
 import com.example.hw04_gymlog_v300.database.entities.User;
 import com.example.hw04_gymlog_v300.databinding.ActivityMainBinding;
+import com.example.hw04_gymlog_v300.viewHolders.GymLogAdapter;
+import com.example.hw04_gymlog_v300.viewHolders.GymLogViewModel;
 
 import java.util.ArrayList;
 
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     static final String SAVED_INSTANCE_STATE_USERID_KEY = "com.example.hw04_gymlog_v300.SAVED_INSTANCE_STATE_USERID_KEY";
     private ActivityMainBinding binding;
     private GymLogRepository repository;
+    private GymLogViewModel gymLogViewModel;
 
     public static final String TAG = "PARK_GYMLOG";
     String mExercise = "";
@@ -53,11 +59,22 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        gymLogViewModel = new ViewModelProvider(this).get(GymLogViewModel.class);
+
+        RecyclerView recyclerView = binding.logDisplayRecyclerView;
+        final GymLogAdapter adapter = new GymLogAdapter(new GymLogAdapter.GymLogDiff());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager((this)));
+
         // login page content -> displays login page
         // e.g., gets user information
         repository = GymLogRepository.getRepository(getApplication());
         loginUser(savedInstanceState);
 
+        // look up method reference
+        gymLogViewModel.getAllLogsById(loggedInUserId).observe(this, gymLogs -> {
+            adapter.submitList(gymLogs);
+        });
 
         // make sure user is logged in
         // User is not logged in at this point, go to login screen
@@ -69,27 +86,31 @@ public class MainActivity extends AppCompatActivity {
         updateSharedPreference();
 
         // enabling scroll in our displayed exercise info
-        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
+        // todo: remove this
+//        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
 
         // updating display before click (visible before action)
-        updateDisplay();
+        // todo: remove this
+//        updateDisplay();
 
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay();
                 insertGymLogRecord();
-                updateDisplay();
+                //todo: remove this
+//                updateDisplay();
             }
         });
 
-        // testing updateDisplay() -> should delete if finding issues
-        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateDisplay();
-            }
-        });
+        // todo: remove this block
+//        // testing updateDisplay() -> should delete if finding issues
+//        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                updateDisplay();
+//            }
+//        });
     }
 
     private void loginUser(Bundle savedInstanceState) {
@@ -217,18 +238,19 @@ public class MainActivity extends AppCompatActivity {
     /**
      * A method to access data inside database & display it on screen.
      */
+    @Deprecated
     private void updateDisplay() {
         // accessing db
         ArrayList<GymLog> allLogs = repository.getAllLogsByUserId(loggedInUserId);
         if (allLogs.isEmpty()) {
             // todo: fix if R.string.nothing_to_show is causing logic error
-            binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
+//            binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
         StringBuilder sb = new StringBuilder();
         for (GymLog log : allLogs) {
             sb.append(log);
         }
-        binding.logDisplayTextView.setText(sb.toString());
+//        binding.logDisplayTextView.setText(sb.toString());
     }
 
     private void getInformationFromDisplay() {

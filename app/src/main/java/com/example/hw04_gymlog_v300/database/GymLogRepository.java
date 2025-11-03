@@ -103,6 +103,10 @@ public class GymLogRepository {
         return userDAO.getUserByUserId(userId);
     }
 
+    public LiveData<List<GymLog>> getAllLogsByUserIdLiveData(int loggedInUserId) {
+        return gymLogDAO.getRecordsetUserIdLiveData(loggedInUserId);
+    }
+    @Deprecated
     public ArrayList<GymLog> getAllLogsByUserId(int loggedInUserId) {
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
                 // uses this on a thread-> don't make db calls on main ui thread
